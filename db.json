@@ -1,0 +1,34 @@
+{
+  "expenses": [
+    {
+      "id": 1,
+      "name": "Spotify",
+      "fee": 13,
+      "periodicity": "Monthly"
+    },
+    {
+      "name": "Netflix",
+      "fee": "14",
+      "periodicity": "Monthly",
+      "id": 2
+    },
+    {
+      "name": "1Password",
+      "fee": "15",
+      "periodicity": "Monthly",
+      "id": 3
+    },
+    {
+      "name": "mimo",
+      "fee": "9.99",
+      "periodicity": "Monthly",
+      "id": 4
+    },
+    {
+      "name": "Blink",
+      "fee": "16",
+      "periodicity": "Monthly",
+      "id": 5
+    }
+  ]
+}
