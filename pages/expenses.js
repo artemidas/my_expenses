@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Form from "../src/components/Expenses/Form";
 import List from "./../src/components/Expenses/List";
 import { fetchServices, createService } from "./../src/store/expenses";
+import Page from "../src/components/Layout/Page";
 
 class Expenses extends Component {
   static getInitialProps(props) {
@@ -29,12 +30,12 @@ class Expenses extends Component {
 
   render() {
     return (
-      <div>
+      <Page>
         <h1>My expenses</h1>
         <Form onSubmit={this._addService} />
         <List />
         <p>Total: {this._getTotal()}</p>
-      </div>
+      </Page>
     );
   }
 }

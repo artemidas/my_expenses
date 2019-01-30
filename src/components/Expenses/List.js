@@ -1,6 +1,8 @@
+/* @jsx jsx */
 import { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { jsx } from "@emotion/core";
 import styles from "./styles";
 import { removeService } from "./../../store/expenses";
 

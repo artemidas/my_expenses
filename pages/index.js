@@ -1,15 +1,12 @@
 import React from "react";
-import Link from "next/link";
+import Page from "../src/components/Layout/Page";
 
 class Index extends React.Component {
   render() {
     return (
-      <div>
+      <Page>
         <h1>Artem</h1>
-        <Link href="/expenses">
-          <a>Expenses</a>
-        </Link>
-      </div>
+      </Page>
     );
   }
 }
