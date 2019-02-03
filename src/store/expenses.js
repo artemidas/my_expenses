@@ -1,6 +1,6 @@
 import request from "superagent";
-import { createAction, handleActions, combineActions } from "redux-actions";
 import assign from "lodash/assign";
+import { createAction, handleActions, combineActions } from "redux-actions";
 
 const fetchServicesBegin = createAction("fetch/services/begin");
 const fetchServicesSuccess = createAction("fetch/services/success");
@@ -46,9 +46,9 @@ const removeServiceFailure = createAction("remove/service/failure");
  * Removes service
  * @param {number} id - ID of the service
  */
-export function removeService(id) {
+export function removeServiceAction(id) {
   return (dispatch, getState) => {
-    return request.delete("http://localhost:3001/expenses/" + id).end(err => {
+    return request.delete(`http://localhost:3001/expenses/${id}`).end(err => {
       if (err) {
         return dispatch(removeServiceFailure(err));
       }

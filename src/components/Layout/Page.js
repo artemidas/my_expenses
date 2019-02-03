@@ -1,8 +1,8 @@
-/* @jsx jsx */
-import React from "react";
-import Header from "./Header";
+/** @jsx jsx */
 import { jsx } from "@emotion/core";
 import styled from "@emotion/styled";
+import PropTypes from 'prop-types'
+import Header from "./Header";
 
 const Container = styled.div`
   width: 80%;
@@ -13,18 +13,19 @@ const Container = styled.div`
   grid-gap: 1rem;
 `;
 
-const Content = styled.div`
+export const Content = styled.div`
   grid-row: 2 / 4;
   grid-column: 1 / 4;
 `;
 
-const Page = props => {
-  return (
-    <Container>
-      <Header />
-      <Content>{props.children}</Content>
-    </Container>
-  );
-};
+const Page = props => (
+  <Container>
+    <Header /> {props.children}
+  </Container>
+);
+
+Page.propTypes = {
+  children: PropTypes.array
+}
 
 export default Page;
