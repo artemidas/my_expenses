@@ -1,5 +1,7 @@
 import request from "superagent";
 import assign from "lodash/assign";
+import filter from "lodash/filter";
+import concat from "lodash/concat";
 import { createAction, handleActions, combineActions } from "redux-actions";
 
 const fetchServicesBegin = createAction("fetch/services/begin");
@@ -23,7 +25,7 @@ const createServiceSuccess = createAction("create/service/success");
 const createServiceFailure = createAction("create/service/failure");
 
 export function createService(body) {
-  return (dispatch, getState) => {
+  return dispatch => {
     dispatch(createServiceBegin());
     return request
       .post("http://localhost:3001/expenses")
@@ -33,9 +35,7 @@ export function createService(body) {
         if (err) {
           return dispatch(createServiceFailure(err));
         }
-        const store = getState();
-        const updatedList = [].concat(store.expenses.list).concat(res.body);
-        return dispatch(createServiceSuccess(updatedList));
+        return dispatch(createServiceSuccess(res.body));
       });
   };
 }
@@ -45,7 +45,7 @@ const updateServiceSuccess = createAction("update/service/success");
 const updateServiceFailure = createAction("update/service/failure");
 
 export function updateService(body) {
-  return (dispatch, getState) => {
+  return dispatch => {
     dispatch(updateServiceBegin());
     return request
       .patch(`http://localhost:3001/expenses/${body.id}`)
@@ -55,11 +55,7 @@ export function updateService(body) {
         if (err) {
           return dispatch(updateServiceFailure(err));
         }
-        const { expenses } = getState();
-        const updatedList = expenses.list.map(expense =>
-          expense.id === body.id ? (expense = res.body) : expense
-        );
-        return dispatch(updateServiceSuccess(updatedList));
+        return dispatch(updateServiceSuccess(res.body));
       });
   };
 }
@@ -71,14 +67,12 @@ const removeServiceFailure = createAction("remove/service/failure");
  * @param {number} id - ID of the service
  */
 export function removeServiceAction(id) {
-  return (dispatch, getState) => {
+  return dispatch => {
     return request.delete(`http://localhost:3001/expenses/${id}`).end(err => {
       if (err) {
         return dispatch(removeServiceFailure(err));
       }
-      const expenses = getState().expenses.list;
-      const removed = expenses.filter(expense => expense.id !== id);
-      return dispatch(removeServiceSuccess(removed));
+      return dispatch(removeServiceSuccess(id));
     });
   };
 }
@@ -95,24 +89,40 @@ const servicesReducer = handleActions(
   {
     [combineActions(fetchServicesBegin, createServiceBegin)]: state =>
       assign({}, state, { isLoading: true }),
-    [combineActions(
-      fetchServicesSuccess,
-      createServiceSuccess,
-      updateServiceSuccess,
-      removeServiceSuccess
-    )]: (state, action) =>
+    [fetchServicesSuccess]: (state, action) =>
       assign({}, state, {
         list: action.payload,
         isLoading: false,
         isUpdating: false
       }),
+    [updateServiceBegin]: state => assign({}, state, { isUpdating: true }),
+    [updateServiceSuccess]: (state, action) => {
+      const updatedList = state.list.map(expense =>
+        expense.id === action.payload.id ? (expense = action.payload) : expense
+      );
+      return assign({}, state, {
+        list: updatedList,
+        isLoading: false,
+        isUpdating: false
+      });
+    },
+    [removeServiceSuccess]: (state, action) => {
+      const removed = filter(
+        state.list,
+        expense => expense.id !== action.payload
+      );
+      return assign({}, state, { list: removed, isLoading: false });
+    },
+    [createServiceSuccess]: (state, action) => {
+      const updated = concat(state.list, action.payload);
+      return assign({}, state, { list: updated, isLoading: false });
+    },
     [combineActions(
       fetchServicesFailure,
       createServiceFailure,
+      updateServiceFailure
     )]: (state, action) =>
-      assign({}, state, { error: action.payload, isLoading: false }),
-    [updateServiceBegin]: state => assign({}, state, { isUpdating: true }),
-    [updateServiceSuccess]: state => assign({}, state, { isUpdating: false })
+      assign({}, state, { error: action.payload, isLoading: false })
   },
   defaultState
 );
