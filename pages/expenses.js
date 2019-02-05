@@ -1,15 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "@emotion/styled";
-import Form from "../src/components/Expenses/Form";
-import List from "../src/components/Expenses/List";
-import { fetchServices, createService } from "../src/store/expenses";
-import Page, { Content } from "../src/components/Layout/Page";
 import PropTypes from "prop-types";
+
+import CreateForm from "../src/components/Expenses/Form/Create";
+import List from "../src/components/Expenses/List";
+import { fetchServices } from "../src/store/expenses";
+import Page, { Content } from "../src/components/Layout/Page";
+
 const Total = styled.p`
   grid-column: 4 / 5;
   grid-row: 2 / 2;
 `;
+
 class Expenses extends Component {
   static propTypes = {
     services: PropTypes.array,
@@ -27,10 +30,6 @@ class Expenses extends Component {
     }
   }
 
-  _addService = (values, dispatch) => {
-    dispatch(createService(values));
-  };
-
   _getTotal = () => {
     let total = 0;
     if (this.props.services !== null)
@@ -42,9 +41,11 @@ class Expenses extends Component {
     return (
       <Page>
         <Content>
-          <h1> My expenses </h1> <Form onSubmit={this._addService} /> <List />
+          <h1>My expenses</h1>
+          <CreateForm />
+          <List />
         </Content>
-        <Total>Total: {this._getTotal()} </Total>
+        <Total>Total: {this._getTotal()}</Total>
       </Page>
     );
   }

@@ -5,10 +5,23 @@ import { connect } from "react-redux";
 import { jsx } from "@emotion/core";
 import styles from "./styles";
 import { removeServiceAction } from "../../store/expenses";
+import EditForm from "./Form/Edit";
 
 class List extends Component {
+  state = {
+    editing: null
+  };
+
+  static getDerivedStateFromProps(nextProps, nextState) {
+    if (!nextProps.isUpdating) {
+      return { editing: nextState.editing };
+    }
+    return { editing: null };
+  }
+
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
+    isUpdating: PropTypes.bool.isRequired,
     services: PropTypes.arrayOf(PropTypes.object),
     removeService: PropTypes.func.isRequired
   };
@@ -19,26 +32,44 @@ class List extends Component {
       return "Loading...";
     }
     const { services, removeService } = this.props;
+    const { editing } = this.state;
     return (
-      <ul css={styles.list}>
+      <div css={styles.list}>
         {services.map(service => (
-          <li key={`service-${service.id}`}>
-            {service.name} - Fee
-            {service.fee} - Periodicity
-            {service.periodicity}
+          <div key={`service-${service.id}`}>
+            {editing === service.id ? (
+              <div>
+                <EditForm
+                  values={service}
+                  onCancelEdit={() => this.setState({ editing: null })}
+                />
+              </div>
+            ) : (
+              <p>
+                {service.name} - Fee {service.fee} - Periodicity{" "}
+                {service.periodicity}
+              </p>
+            )}
             <button type="button" onClick={() => removeService(service.id)}>
               X
             </button>
-          </li>
+            <button
+              type="button"
+              onClick={() => this.setState({ editing: service.id })}
+            >
+              Edit
+            </button>
+          </div>
         ))}
-      </ul>
+      </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
   services: state.expenses.list,
-  isLoading: state.expenses.isLoading
+  isLoading: state.expenses.isLoading,
+  isUpdating: state.expenses.isUpdating
 });
 
 const mapDispatchToProps = {

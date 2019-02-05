@@ -40,6 +40,30 @@ export function createService(body) {
   };
 }
 
+const updateServiceBegin = createAction("update/service/begin");
+const updateServiceSuccess = createAction("update/service/success");
+const updateServiceFailure = createAction("update/service/failure");
+
+export function updateService(body) {
+  return (dispatch, getState) => {
+    dispatch(updateServiceBegin());
+    return request
+      .patch(`http://localhost:3001/expenses/${body.id}`)
+      .set("accept", "json")
+      .send(body)
+      .end((err, res) => {
+        if (err) {
+          return dispatch(updateServiceFailure(err));
+        }
+        const { expenses } = getState();
+        const updatedList = expenses.list.map(expense =>
+          expense.id === body.id ? (expense = res.body) : expense
+        );
+        return dispatch(updateServiceSuccess(updatedList));
+      });
+  };
+}
+
 const removeServiceSuccess = createAction("remove/service/success");
 const removeServiceFailure = createAction("remove/service/failure");
 /**
@@ -63,6 +87,7 @@ const defaultState = {
   list: null,
   item: {},
   isLoading: false,
+  isUpdating: false,
   error: null
 };
 
@@ -70,20 +95,24 @@ const servicesReducer = handleActions(
   {
     [combineActions(fetchServicesBegin, createServiceBegin)]: state =>
       assign({}, state, { isLoading: true }),
-    [combineActions(fetchServicesSuccess, createServiceSuccess)]: (
-      state,
-      action
-    ) =>
+    [combineActions(
+      fetchServicesSuccess,
+      createServiceSuccess,
+      updateServiceSuccess,
+      removeServiceSuccess
+    )]: (state, action) =>
       assign({}, state, {
         list: action.payload,
-        isLoading: false
+        isLoading: false,
+        isUpdating: false
       }),
-    [combineActions(fetchServicesFailure, createServiceFailure)]: (
-      state,
-      action
-    ) => assign({}, state, { error: action.payload, isLoading: false }),
-    [removeServiceSuccess]: (state, action) =>
-      assign({}, state, { list: action.payload })
+    [combineActions(
+      fetchServicesFailure,
+      createServiceFailure,
+    )]: (state, action) =>
+      assign({}, state, { error: action.payload, isLoading: false }),
+    [updateServiceBegin]: state => assign({}, state, { isUpdating: true }),
+    [updateServiceSuccess]: state => assign({}, state, { isUpdating: false })
   },
   defaultState
 );
