@@ -2,8 +2,10 @@ import { css } from "@emotion/core";
 
 const styles = {
   list: css`
-    color: red;
+    text-decoration: none;
+    list-style: none;
   `,
+  list_item: css``,
   form: css`
     display: flex;
   `,
