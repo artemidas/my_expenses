@@ -11,7 +11,7 @@ const fetchServicesFailure = createAction("fetch/services/failure");
 export function fetchServices() {
   return dispatch => {
     dispatch(fetchServicesBegin());
-    return request.get("http://localhost:3001/expenses").end((err, res) => {
+    return request.get("http://localhost:3000/api/expenses").end((err, res) => {
       if (err) {
         return dispatch(fetchServicesFailure(err));
       }
@@ -28,7 +28,7 @@ export function createService(body) {
   return dispatch => {
     dispatch(createServiceBegin());
     return request
-      .post("http://localhost:3001/expenses")
+      .post("http://localhost:3000/api/expenses")
       .set("accept", "json")
       .send(body)
       .end((err, res) => {
@@ -48,7 +48,7 @@ export function updateService(body) {
   return dispatch => {
     dispatch(updateServiceBegin());
     return request
-      .patch(`http://localhost:3001/expenses/${body.id}`)
+      .patch(`http://localhost:3000/api/expenses/${body.id}`)
       .set("accept", "json")
       .send(body)
       .end((err, res) => {
@@ -68,12 +68,14 @@ const removeServiceFailure = createAction("remove/service/failure");
  */
 export function removeServiceAction(id) {
   return dispatch => {
-    return request.delete(`http://localhost:3001/expenses/${id}`).end(err => {
-      if (err) {
-        return dispatch(removeServiceFailure(err));
-      }
-      return dispatch(removeServiceSuccess(id));
-    });
+    return request
+      .delete(`http://localhost:3000/api/expenses/${id}`)
+      .end(err => {
+        if (err) {
+          return dispatch(removeServiceFailure(err));
+        }
+        return dispatch(removeServiceSuccess(id));
+      });
   };
 }
 

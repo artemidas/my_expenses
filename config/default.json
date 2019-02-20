@@ -1,0 +1,10 @@
+{
+  "db": {
+    "migrations-dir": "./api/migrations",
+    "user": "postgres",
+    "password": "artem",
+    "host": "localhost",
+    "port": 5432,
+    "database": "my_expenses"
+  }
+}

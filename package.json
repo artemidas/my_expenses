@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
-    "api": "json-server --watch db.json --port 3001"
+    "dev": "nodemon -w server/server server.js",
+    "migrate": "node-pg-migrate"
   },
   "keywords": [],
   "author": "",
@@ -13,12 +13,15 @@
   "dependencies": {
     "@emotion/core": "^10.0.6",
     "@emotion/styled": "^10.0.6",
-    "axios": "^0.18.0",
     "babel-plugin-emotion": "^10.0.6",
+    "body-parser": "^1.18.3",
+    "config": "^3.0.1",
+    "express": "^4.16.4",
     "formik": "^1.4.3",
-    "json-server": "^0.14.2",
     "lodash": "^4.17.11",
     "next": "^7.0.2",
+    "node-pg-migrate": "^3.16.0",
+    "pg": "^7.8.0",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
@@ -32,6 +35,7 @@
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "eslint": "^5.13.0",
-    "eslint-plugin-react": "^7.12.4"
+    "eslint-plugin-react": "^7.12.4",
+    "nodemon": "^1.18.10"
   }
 }
