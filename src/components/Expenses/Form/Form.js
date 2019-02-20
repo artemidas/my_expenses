@@ -7,8 +7,9 @@ import { Formik } from "formik";
 const Form = props => {
   return (
     <Formik
-      onSubmit={values => {
+      onSubmit={(values, { resetForm }) => {
         props.onSubmit(values);
+        resetForm(props.values);
       }}
       initialValues={props.values}
     >
