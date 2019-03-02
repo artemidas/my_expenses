@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -w server/server server.js",
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint",
     "migrate": "node-pg-migrate"
   },
   "keywords": [],
@@ -16,11 +21,13 @@
     "babel-plugin-emotion": "^10.0.6",
     "body-parser": "^1.18.3",
     "config": "^3.0.1",
+    "eslint-loader": "^2.1.2",
     "express": "^4.16.4",
     "formik": "^1.4.3",
     "lodash": "^4.17.11",
     "next": "^7.0.2",
     "node-pg-migrate": "^3.16.0",
+    "nuxt": "^2.4.3",
     "pg": "^7.8.0",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
@@ -30,12 +37,15 @@
     "redux-actions": "^2.6.4",
     "redux-devtools-extension": "^2.13.7",
     "redux-thunk": "^2.3.0",
-    "superagent": "^4.1.0"
+    "superagent": "^4.1.0",
+    "superagent-prefix": "0.0.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "eslint": "^5.13.0",
+    "eslint-friendly-formatter": "^4.0.1",
     "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-vue": "^5.2.2",
     "nodemon": "^1.18.10"
   }
 }
