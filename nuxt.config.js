@@ -1,5 +1,4 @@
 module.exports = {
-  serverMiddleware: ['~/server/index.js'],
   /*
    ** Headers of the page
    */
@@ -12,6 +11,9 @@ module.exports = {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
+  plugins: [
+    '~/plugins/firestore.js'
+  ],
   /*
    ** Customize the progress bar color
    */

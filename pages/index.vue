@@ -14,8 +14,8 @@ export default {
     ExpenseCreateForm,
     ExpensesList
   },
-  async fetch({ store }) {
-    await store.dispatch('fetchExpenses')
+  created() {
+    this.$store.dispatch('fetchExpenses')
   }
 }
 </script>

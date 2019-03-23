@@ -1,4 +1,4 @@
-import request from '~/plugins/superagent'
+import db from '~/plugins/firestore'
 
 export const state = () => ({
   expenses: [],
@@ -37,14 +37,16 @@ export const getters = {
 
 export const actions = {
   async fetchExpenses({ commit }) {
-    const res = await request('GET', '/api/expenses')
-    commit('setExpenses', res.body)
+    const snapshot = await db.collection('expenses').get()
+    const expenses = [];
+    snapshot.forEach((doc) => {
+      expenses.push({ id: doc.id, ...doc.data() })
+    });
+    commit('setExpenses', expenses)
   },
   async createExpense({ commit }, expense) {
-    const res = await request('POST', '/api/expenses')
-      .set('accept', 'json')
-      .send(expense)
-    commit('createExpense', res.body)
+    const docRef = await db.collection('expenses').add(expense);
+    commit('createExpense', { id: docRef.id, ...expense })
   },
   openExpenseEdit({ commit }, expense) {
     commit('openExpenseEdit', expense)
@@ -53,9 +55,8 @@ export const actions = {
     commit('closeExpenseEdit')
   },
   async updateExpense({ commit }, expense) {
-    const res = await request('PATCH', '/api/expenses/' + expense.id)
-      .set('accept', 'json')
-      .send(expense)
-    commit('updateExpense', res.body)
+    const expenseRef = await db.collection('expenses').doc(expense.id)
+    expenseRef.update(expense);
+    commit('updateExpense', { id: expenseRef.id, ...expense })
   }
 }
