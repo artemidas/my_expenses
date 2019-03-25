@@ -1,19 +1,20 @@
 <template>
-  <div>
-    <ul>
+  <ul>
+    <div class="container">
       <li v-for="expense in expenses" :key="expense.id">
-        <p>
-          {{expense.name}} - Fee {{expense.fee}} - Periodicity
-          {{expense.periodicity}}
-        </p>
-        <button @click="openExpenseEdit(expense)">Edit</button>
+        <div class="expense-item">
+          <p>
+            {{expense.name}} - Fee {{expense.fee}} - Periodicity
+            {{expense.periodicity}}
+          </p>
+          <button @click="openExpenseEdit(expense)">Edit</button>
+        </div>
         <ExpenseEditForm v-if="expense.id === editingExpense" :data="expense">
           <button @click="closeExpenseEdit" type="button">Cancel</button>
         </ExpenseEditForm>
       </li>
-    </ul>
-    <p>Total {{ total }}</p>
-  </div>
+    </div>
+  </ul>
 </template>
 
 <script>
@@ -26,12 +27,6 @@ export default {
     ExpenseEditForm
   },
   computed: {
-    total() {
-      return this.expenses.reduce(
-        (accumulator, expense) => accumulator + Number(expense.fee),
-        0
-      )
-    },
     ...mapGetters({
       expenses: 'expenses',
       editingExpense: 'editingExpense'
@@ -47,4 +42,9 @@ export default {
   }
 }
 </script>
-
+<style scoped>
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+}
+</style>
