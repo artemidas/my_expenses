@@ -1,4 +1,5 @@
 module.exports = {
+  buildDir: 'dist',
   /*
    ** Headers of the page
    */
@@ -11,9 +12,8 @@ module.exports = {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
-  plugins: [
-    '~/plugins/firestore.js'
-  ],
+  plugins: ['~/plugins/firestore.js'],
+  css: ['~/css/normalize.css', '~/css/styles.css'],
   /*
    ** Customize the progress bar color
    */
