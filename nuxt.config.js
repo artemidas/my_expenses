@@ -1,5 +1,4 @@
 module.exports = {
-  buildDir: 'dist',
   /*
    ** Headers of the page
    */
