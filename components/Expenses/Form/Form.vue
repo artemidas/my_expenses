@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import assign from 'lodash/assign'
+
 export default {
   name: 'ExpenseForm',
   props: {
@@ -31,7 +33,7 @@ export default {
   },
   methods: {
     onInput(field, e) {
-      this.expense = Object.assign({}, this.expense, {
+      this.expense = assign({}, this.expense, {
         [field]: e.target.value
       })
     },
