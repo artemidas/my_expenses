@@ -2,16 +2,17 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 
 if (!firebase.apps.length) {
-    const config = {
-        apiKey: "AIzaSyBcMNrnAtzSZkzQX9Muz3ghDruZzOIIx0Y",
-        authDomain: "my-expenses-7cf29.firebaseapp.com",
-        databaseURL: "https://my-expenses-7cf29.firebaseio.com",
-        projectId: "my-expenses-7cf29",
-        storageBucket: "my-expenses-7cf29.appspot.com",
-        messagingSenderId: "1033848335616"
-    }
-    firebase.initializeApp(config)
-    firebase.firestore()
+  const config = {
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    databaseURL: process.env.DATABASE_URL,
+    projectId: process.env.PROJECT_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGING_SENDERID
+  }
+
+  firebase.initializeApp(config)
+  firebase.firestore()
 }
 
 export default firebase.firestore()

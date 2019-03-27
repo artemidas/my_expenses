@@ -11,6 +11,7 @@ module.exports = {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
+  modules: ['@nuxtjs/dotenv'],
   plugins: ['~/plugins/firestore.js'],
   css: ['~/css/normalize.css', '~/css/styles.css'],
   /*

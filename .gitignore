@@ -1,4 +1,5 @@
 .nuxt
 .firebase
+.env
 dist
 node_modules
